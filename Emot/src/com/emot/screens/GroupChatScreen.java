@@ -1,11 +1,9 @@
 package com.emot.screens;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.ChatManager;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -19,7 +17,6 @@ import android.os.Messenger;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,18 +29,14 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emot.adapters.ChatListArrayAdapter;
-import com.emot.androidclient.chat.XMPPChatServiceAdapter;
 import com.emot.androidclient.chat.XMPPGroupChatServiceAdapter;
 import com.emot.androidclient.data.ChatProvider;
 import com.emot.androidclient.data.ChatProvider.ChatConstants;
-import com.emot.androidclient.service.IXMPPChatService;
 import com.emot.androidclient.service.IXMPPGroupChatService;
 import com.emot.androidclient.service.XMPPService;
 import com.emot.common.EmotEditText;
 import com.emot.common.EmotTextView;
 import com.emot.constants.IntentStrings;
-import com.emot.emotobjects.ChatMessage;
 import com.emot.model.EmotApplication;
 
 public class GroupChatScreen extends ActionBarActivity{
@@ -225,19 +218,19 @@ public class GroupChatScreen extends ActionBarActivity{
 		setChatWindowAdapter();
 		
 
-		if(EmotApplication.getConnection() != null){
-			ChatManager current_chat  = EmotApplication.getConnection().getChatManager();
-
-			runOnUiThread(new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if(chat != null){
-						sendButton.setEnabled(true);
-					}
-
-				}
-			}));
-		}
+//		if(EmotApplication.getConnection() != null){
+//			ChatManager current_chat  = EmotApplication.getConnection().getChatManager();
+//
+//			runOnUiThread(new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					if(chat != null){
+//						sendButton.setEnabled(true);
+//					}
+//
+//				}
+//			}));
+//		}
 
 		chatEntry.setOnClickListener(new OnClickListener() {
 
