@@ -46,6 +46,7 @@ public class XMPPService extends GenericService {
 	private boolean create_account = false;
 	private IXMPPRosterService.Stub mService2RosterConnection;
 	private IXMPPChatService.Stub mServiceChatConnection;
+	private IXMPPGroupChatService.Stub mGroupServiceChatConnection;
 
 	private RemoteCallbackList<IXMPPRosterCallback> mRosterCallbacks = new RemoteCallbackList<IXMPPRosterCallback>();
 	private HashSet<String> mIsBoundTo = new HashSet<String>();
@@ -153,6 +154,30 @@ public class XMPPService extends GenericService {
 		mConnectionDemanded.set(mConfig.autoConnect);
 		doConnect();
 		return START_STICKY;
+	}
+	
+	private void createGroupServiceChatStub(){
+		
+		mGroupServiceChatConnection = new IXMPPGroupChatService.Stub() {
+			
+			@Override
+			public void sendMessage(String user, String message) throws RemoteException {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public boolean isAuthenticated() throws RemoteException {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public void clearNotifications(String Jid) throws RemoteException {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
 	private void createServiceChatStub() {

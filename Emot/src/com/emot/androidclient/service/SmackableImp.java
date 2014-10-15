@@ -2,8 +2,11 @@ package com.emot.androidclient.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -30,6 +33,8 @@ import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.DNSJavaResolver;
+import org.jivesoftware.smackx.Form;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.carbons.Carbon;
 import org.jivesoftware.smackx.carbons.CarbonManager;
@@ -37,6 +42,7 @@ import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
 import org.jivesoftware.smackx.entitycaps.cache.SimpleDirectoryPersistentCache;
 import org.jivesoftware.smackx.entitycaps.provider.CapsExtensionProvider;
 import org.jivesoftware.smackx.forward.Forwarded;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
@@ -147,7 +153,7 @@ public class SmackableImp implements Smackable {
 	private Thread mConnectingThread;
 	private Object mConnectingThreadMutex = new Object();
 
-
+	private MultiUserChat mGroupChat;
 	private ConnectionState mRequestedState = ConnectionState.OFFLINE;
 	private ConnectionState mState = ConnectionState.OFFLINE;
 	private String mLastError;
@@ -516,6 +522,65 @@ public class SmackableImp implements Smackable {
 		while (reason.getCause() != null)
 			reason = reason.getCause();
 		onDisconnected(reason.getLocalizedMessage());
+	}
+	
+	private void initMUC(final String pGroupName){
+		Form form = null;
+		mGroupChat = new MultiUserChat(mXMPPConnection, pGroupName+"@conference.emot-net");
+
+		try {
+			mGroupChat.create(pGroupName);
+			Log.i(TAG, "creating multi user chat2 " +mGroupChat);
+			form = mGroupChat.getConfigurationForm();
+			Form submitForm = form.createAnswerForm(); 
+			Iterator<FormField> fields = form.getFields();
+			while(fields.hasNext()){
+				Log.i(TAG, "while loop 1111111111111111");
+				FormField field = (FormField) fields.next();
+				if(!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable() != null){
+					submitForm.setDefaultAnswer(field.getVariable()); 
+				}
+			}
+			List<String> owners = new ArrayList<String>(); 
+			Log.i(TAG, "creating multi user chat 3" +mGroupChat);
+			//owners.add("test5@emot-net");
+			//owners.add("test6@emot-net");
+			//			submitForm.setAnswer("muc#roomconfig_roomowners", owners);
+			Log.i(TAG, "creating multi user chat 4" +mGroupChat);
+			try {
+				mGroupChat.sendConfigurationForm(submitForm);
+
+
+			} catch (XMPPException e) {
+				Log.i(TAG, "Exception " +e.getMessage());
+				e.printStackTrace();
+			}
+		} catch (XMPPException e1) {
+			
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+	}
+	
+	private Iterator discoverjoinedRooms(final String pUserName){
+		
+		Iterator<String> joinedRooms = MultiUserChat.getJoinedRooms(mXMPPConnection, pUserName+"/Smack");
+		
+		return joinedRooms;
+	}
+	
+	private void joinRooms(final Iterator<String> pJoinedRooms){
+		while(pJoinedRooms.hasNext()){
+			final String room = pJoinedRooms.next();
+			if(room.trim().equals("")){
+				Log.i(TAG, "No rooms to join");
+			}else{
+				//join the room to multi user chat object.
+			}
+		}
+		
 	}
 
 	private void tryToConnect(boolean create_account) throws EmotXMPPException {
