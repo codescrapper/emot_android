@@ -22,7 +22,7 @@ public class XMPPGroupChatServiceAdapter {
 	public void sendMessage(String user, String message) {
 		try {
 			Log.i(TAG, "Called sendMessage(): " + grpJabberID + ": " + message);
-			xmppGrpServiceStub.sendMessage(user, message);
+			xmppGrpServiceStub.sendGroupMessage(user, message);
 		} catch (RemoteException e) {
 			Log.e(TAG, "caught RemoteException: " + e.getMessage());
 		}

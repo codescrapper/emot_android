@@ -50,7 +50,7 @@
             android:orientation="horizontal" 
              android:weightSum="100">
 
-            <EditText
+            <com.emot.common.EmotEditText
                 android:id="@+id/editTextStatus"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

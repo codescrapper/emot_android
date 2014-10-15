@@ -57,10 +57,12 @@ public class XMPPService extends GenericService {
 		userStartedWatching();
 
 		String chatPartner = intent.getDataString();
-		if ((chatPartner != null)) {
+		if ((chatPartner != null) && !chatPartner.equals("test")) {
 			resetNotificationCounter(chatPartner);
 			mIsBoundTo.add(chatPartner);
 			return mServiceChatConnection;
+		}else if(chatPartner.equals("test")){
+			return mGroupServiceChatConnection;
 		}
 		return mService2RosterConnection;
 	}
@@ -92,6 +94,7 @@ public class XMPPService extends GenericService {
 		Log.i(TAG, "JABBER ID " + mConfig.jabberID);
 		createServiceRosterStub();
 		createServiceChatStub();
+		createGroupServiceChatStub();
 
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
@@ -161,14 +164,17 @@ public class XMPPService extends GenericService {
 		mGroupServiceChatConnection = new IXMPPGroupChatService.Stub() {
 			
 			@Override
-			public void sendMessage(String user, String message) throws RemoteException {
-				// TODO Auto-generated method stub
+			public void sendGroupMessage(String user, String message) throws RemoteException {
+				if (mSmackable != null)
+					mSmackable.sendGroupMessage(message);
 				
 			}
 			
 			@Override
 			public boolean isAuthenticated() throws RemoteException {
-				// TODO Auto-generated method stub
+				if (mSmackable != null) {
+					return mSmackable.isAuthenticated();
+				}
 				return false;
 			}
 			
