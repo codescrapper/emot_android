@@ -3,9 +3,12 @@ package com.emot.screens;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smackx.pubsub.GetItemsRequest;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,6 +17,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -233,7 +237,7 @@ public class GroupChatScreen extends ActionBarActivity {
 		chatEntry = (EmotEditText) findViewById(R.id.editTextStatus);
 		chatEntry.setEmotSuggestionLayout(emotSuggestionLayout);
 		userTitle.setText(grpName);
-		chatEntry.addTextChangedListener(groupMessageWatcher);
+		//chatEntry.addTextChangedListener(groupMessageWatcher);
 		ab.setTitle(chatAlias);
 		ab.setSubtitle(lastSeen);
 
@@ -261,19 +265,38 @@ public class GroupChatScreen extends ActionBarActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				mCursor.moveToPosition(position);
-				String message = mCursor.getString(mCursor.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
-				messageToCopy.append("\n" +message);
+				Cursor cursor = (Cursor)parent.getItemAtPosition(position);
 				
-			//	Toast.makeText(GroupChatScreen.this, "List item selected:" +message , Toast.LENGTH_LONG).show();
-				view.setSelected(true);view.setBackgroundColor(color.darkgreen);
+				currentlySelectedView = view;
+				Log.i(TAG, "Current view is " +parent.getChildAt(position));
+				String message = "";
+				
+				if(!selectedRow.contains(position)){
+					selectedRow.add(position);
+				 message = cursor.getString(cursor.getColumnIndex(ChatProvider.ChatConstants.MESSAGE));
+				 Toast.makeText(EmotApplication.getAppContext(),
+							"messge selected " + message, Toast.LENGTH_LONG).show();
+				messageToCopy.append("\n" +message);
+				currentlySelectedView.setSelected(true);
+				currentlySelectedView.setBackgroundColor(color.darkgreen);
+				
+				}else{
+					Log.i(TAG, "Deselecting");
+					currentlySelectedView.setBackgroundColor(0x00000000);
+					selectedRow.remove(position);
+				}
+				
 				return false;
 			}
 		});
+		
+		
 		registerXMPPService();
 
 
 	}
+	private Set<Integer> selectedRow = new HashSet<Integer>();
+	private View currentlySelectedView;
 	private StringBuilder messageToCopy = new StringBuilder();
 
 	private TextWatcher groupMessageWatcher = new TextWatcher() {

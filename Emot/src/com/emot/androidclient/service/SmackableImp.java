@@ -11,15 +11,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
+import com.emot.androidclient.util.EmotUtils;
 import org.jivesoftware.smack.AccountManager;
-import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
@@ -86,7 +82,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -101,6 +96,7 @@ import com.emot.androidclient.data.RosterProvider;
 import com.emot.androidclient.data.RosterProvider.RosterConstants;
 import com.emot.androidclient.exceptions.EmotXMPPException;
 import com.emot.androidclient.util.ConnectionState;
+import com.emot.androidclient.util.EmotUtils;
 import com.emot.androidclient.util.LogConstants;
 import com.emot.androidclient.util.PreferenceConstants;
 import com.emot.androidclient.util.StatusMode;
@@ -614,11 +610,14 @@ public class SmackableImp implements Smackable {
 
 	public void initMUC(final String pGroupName){
 		Form form = null;
-		mGroupChat = new MultiUserChat(mXMPPConnection, pGroupName+"@conference.emot-net");
+		String roomID = EmotUtils.generateRoomID();
+		mGroupChat = new MultiUserChat(mXMPPConnection, roomID+"@conference.emot-net");
 
 		try {
 			//mGroupChat.create(pGroupName);
 			mGroupChat.create(pGroupName);
+			mGroupChat.changeSubject(pGroupName);
+			EmotApplication.setValue(roomID+"@conference.emot-net", pGroupName);
 			Log.i(TAG, "creating multi user chat2 " +mGroupChat);
 			form = mGroupChat.getConfigurationForm();
 			Form submitForm = form.createAnswerForm(); 
@@ -640,7 +639,10 @@ public class SmackableImp implements Smackable {
 				//mGroupChat.sendConfigurationForm(submitForm);
 				FormField field = new FormField("muc#roomconfig_persistentroom");
 				field.addValue("1");
+				FormField field2 = new FormField("muc#roomconfig_roomname");
+				field2.addValue(pGroupName);
 				submitForm.addField(field);
+				submitForm.addField(field2);
 				mGroupChat.sendConfigurationForm(submitForm);
 
 			} catch (XMPPException e) {
@@ -1453,7 +1455,7 @@ public class SmackableImp implements Smackable {
 			mXMPPConnection.removePacketListener(mPacketListener);
 
 		PacketTypeFilter filter = new PacketTypeFilter(Message.class);
-
+		
 		mPacketListener = new PacketListener() {
 			public void processPacket(Packet packet) {
 				Log.i(TAG, "packet is " +packet.toXML());
@@ -1464,7 +1466,11 @@ public class SmackableImp implements Smackable {
 						Message msg = (Message) packet;
 						String from = msg.getFrom();
 						String fromJID = getBareJID(msg.getFrom());
-
+						fromJID = EmotApplication.getValue(fromJID, "default");
+						Log.i(TAG, "fromJID is " +fromJID);
+						Log.i(TAG, "message properties " + msg.getPropertyNames());
+						Log.i(TAG, "message extensions " + msg.getExtensions());
+						Log.i(TAG, "room nickname " +msg.getProperty("roomName"));
 						PacketExtension extension = msg.getExtension("http://jabber.org/protocol/chatstates");
 						Log.i(TAG, "Extension  = "+extension +" composing  = "+ msg.getProperty("composing") + " propetries = "+msg.getPropertyNames().size());
 
@@ -1925,7 +1931,12 @@ public class SmackableImp implements Smackable {
 				//			chat.sendMessage(m);
 				//m.setFrom(mGroupChat.getRoom());
 				EmotApplication.setLongValue("historySince", System.currentTimeMillis());
+				
+				//mGroupChat.sendMessage(newMessage.getBody());
+				Log.i(TAG, "sending grp name " + mGroupChat.getRoom());
+				newMessage.setProperty("roomName", mGroupChat.getRoom());
 				mGroupChat.sendMessage(newMessage.getBody());
+				//mGroupChat.sendMessage(newMessage.);
 
 			} else {
 				// send offline -> store to DB
