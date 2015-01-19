@@ -56,7 +56,7 @@ import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
 import com.emot.screens.R.color;
 
-public class GroupChatScreen extends ActionBarActivity {
+public class GroupChatScreen extends EmotActivity {
 
 	private ImageView sendButton;
 	private String messageID = "";

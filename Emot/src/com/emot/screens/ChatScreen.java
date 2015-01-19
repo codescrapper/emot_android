@@ -13,6 +13,8 @@ import java.util.Set;
 import org.jivesoftware.smackx.ChatState;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
+import android.app.PendingIntent.CanceledException;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -31,10 +33,8 @@ import android.os.IBinder;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import com.emot.androidclient.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,6 +59,7 @@ import com.emot.androidclient.data.RosterProvider.RosterConstants;
 import com.emot.androidclient.service.IXMPPChatService;
 import com.emot.androidclient.service.XMPPService;
 import com.emot.androidclient.util.EmotUtils;
+import com.emot.androidclient.util.Log;
 import com.emot.androidclient.util.StatusMode;
 import com.emot.common.EmotEditText;
 import com.emot.common.EmotTextView;
@@ -66,7 +67,7 @@ import com.emot.common.ImageHelper;
 import com.emot.model.EmotApplication;
 import com.emot.screens.R.color;
 
-public class ChatScreen extends ActionBarActivity {
+public class ChatScreen extends EmotActivity {
 	
 	private ImageView sendButton;
 	private EmotEditText chatEntry;
@@ -91,7 +92,7 @@ public class ChatScreen extends ActionBarActivity {
 	private final static int INTERVAL = 1000 * 30;
 	Handler mHandler = new Handler();
 	private View emotSuggestion;
-	
+	PendingIntent pIntent; 
 	Runnable mHandlerTask = new Runnable(){
 	     @Override 
 	     public void run() {
@@ -102,8 +103,16 @@ public class ChatScreen extends ActionBarActivity {
 	
 	
 	long TYPE_PAUSE_DIFF = 2000;
+	
 	long lastTypingState = 0;
 	
+	
+	@Override
+	protected void onStop() {
+		
+		
+		super.onStop();
+	}
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
 			ChatProvider.ChatConstants.DIRECTION,
@@ -173,16 +182,33 @@ public class ChatScreen extends ActionBarActivity {
 	//
 
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (hasWindowFocus()) unbindXMPPService();
+		
+	}
+	@Override
 	protected void onResume() {
 		super.onResume();
-		bindXMPPService();
+		needs_to_bind_unbind = true;
 		//startRepeatingTask();
 	}
-
+	protected boolean needs_to_bind_unbind = false;
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (!needs_to_bind_unbind)
+			return;
+		if (hasFocus)
+			bindXMPPService();
+		else
+			unbindXMPPService();
+		needs_to_bind_unbind = false;
+	}
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unbindXMPPService();
+		needs_to_bind_unbind = true;
 		//stopRepeatingTask();
 	}
 	
@@ -248,6 +274,7 @@ public class ChatScreen extends ActionBarActivity {
 			
 			return true;
 		case R.id.action_settings:
+			
 			startActivity(new Intent(this, UpdateProfileScreen.class));
 			return true;
 		default:
@@ -262,6 +289,8 @@ public class ChatScreen extends ActionBarActivity {
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 		Intent incomingIntent = getIntent();
+		
+		
 		chatFriend = incomingIntent
 				.getStringExtra(ChatScreen.INTENT_CHAT_FRIEND);
 		setAliasFromDB();
@@ -311,11 +340,13 @@ public class ChatScreen extends ActionBarActivity {
 				sendMessage(sendText);
 			}
 		});
+		
+		registerXMPPService();
 
 		// chatView.setAdapter(chatlistAdapter);
 		setChatWindowAdapter();
 
-		registerXMPPService();
+		
 		chatCallback = new IXMPPChatCallback.Stub() {
 		
 			@Override
@@ -447,8 +478,7 @@ public class ChatScreen extends ActionBarActivity {
 	    }
 	}
 	
-	@SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
+	
 	private void delText(){
 	    int sdk = android.os.Build.VERSION.SDK_INT;
 	    if(sdk < android.os.Build.VERSION_CODES. HONEYCOMB) {

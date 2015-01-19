@@ -147,7 +147,7 @@ public class Registration extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, getSHA(EmotApplication.getAppContext()));
 
-		if(EmotApplication.getValue(PreferenceConstants.USER_APPID, null)!=null){
+		if(EmotApplication.getValue(PreferenceConstants.USER_APPID, "")!=""){
 			startActivity(new Intent(this, LastChatScreen.class));
 			finish();
 		}
@@ -342,7 +342,15 @@ public class Registration extends ActionBarActivity {
 				pd.show();
 				pd.setCancelable(false);
 				
-				String vCode = OTP_STARTING_DIGITS + mEnterVerificationCode.getText().toString();	
+				
+				//Remove this before relase
+				String vCode = "";
+				if(Log.IS_DEBUG && mEnterVerificationCode.getText().length()==4){
+					 vCode = mEnterVerificationCode.getText().toString();	
+				}else{
+					 vCode = OTP_STARTING_DIGITS + mEnterVerificationCode.getText().toString();	
+				}
+				
 				String url = WebServiceConstants.HTTP + "://"+ 
 						WebServiceConstants.SERVER_IP
 						+WebServiceConstants.PATH_API+WebServiceConstants.OP_REGISTER;

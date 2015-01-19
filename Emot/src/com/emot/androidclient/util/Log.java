@@ -1,7 +1,7 @@
 package com.emot.androidclient.util;
 
 public class Log {
-	private static boolean IS_DEBUG = false;
+	public static boolean IS_DEBUG = true;
 	
 	public static void i(String tag, String text){
 		if(IS_DEBUG){

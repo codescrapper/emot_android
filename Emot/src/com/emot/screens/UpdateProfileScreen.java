@@ -43,7 +43,7 @@ import com.emot.androidclient.util.PreferenceConstants;
 import com.emot.common.TaskCompletedRunnable;
 import com.emot.model.EmotApplication;
 
-public class UpdateProfileScreen extends ActionBarActivity {
+public class UpdateProfileScreen extends EmotActivity {
 	private EditText editStatus;
 	private Button saveButton;
 	private ImageView imageAvatar;
@@ -332,10 +332,10 @@ public class UpdateProfileScreen extends ActionBarActivity {
 	}
 	
 	public static Bitmap getAvatar(){
-		String img = EmotApplication.getValue(PreferenceConstants.USER_AVATAR, null);
+		String img = EmotApplication.getValue(PreferenceConstants.USER_AVATAR, "");
 		Bitmap bitmap;
 		Log.i(TAG, "img is "+img);
-		if(img==null){
+		if(img.equals("")){
 			bitmap = BitmapFactory.decodeResource(EmotApplication.getAppContext().getResources(), R.drawable.blank_profile);
 		}else{
 			byte[] bArray =  Base64.decode(img, Base64.DEFAULT);
@@ -346,7 +346,7 @@ public class UpdateProfileScreen extends ActionBarActivity {
 	}
 	
 	public static String getStatus(){
-		return EmotApplication.getValue(PreferenceConstants.STATUS_MESSAGE, null);
+		return EmotApplication.getValue(PreferenceConstants.STATUS_MESSAGE, "");
 	}
 	
 }

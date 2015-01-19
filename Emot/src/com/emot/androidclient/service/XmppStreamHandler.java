@@ -116,7 +116,7 @@ public class XmppStreamHandler {
 			isOutgoingSmEnabled = true;
 
 			StreamHandlingPacket enablePacket = new StreamHandlingPacket("enable", URN_SM_2);
-			enablePacket.addAttribute("resume", "true");
+			enablePacket.addAttribute("resume", "false");
 			mConnection.sendPacket(enablePacket);
 		}
 		synchronized(this) {

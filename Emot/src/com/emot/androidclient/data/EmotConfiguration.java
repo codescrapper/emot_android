@@ -154,7 +154,7 @@ public class EmotConfiguration implements OnSharedPreferenceChangeListener {
 				PreferenceConstants.MESSAGE_CARBONS, true);
 
 		this.smackdebug = prefs.getBoolean(PreferenceConstants.SMACKDEBUG,
-				false);
+				true);
 		this.reportCrash = prefs.getBoolean(PreferenceConstants.REPORT_CRASH,
 				false);
 		this.jabberID = prefs.getString(PreferenceConstants.JID, "");

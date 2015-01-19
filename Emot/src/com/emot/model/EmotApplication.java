@@ -91,6 +91,13 @@ public class EmotApplication extends Application {
 		return true;
 	}
 	
+	public static boolean setBooleanValue(String k, boolean v) {
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean(k, v); 
+		editor.commit();
+		return true;
+	}
+	
 	public static boolean setLongValue(String k, long v) {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putLong(k, v); 
@@ -107,8 +114,12 @@ public class EmotApplication extends Application {
 		return prefs.getString(k, d);
 	}
 	
-	public static int getValue(String emoticonSize, int i) {
+	public static int getValue(String emoticonSize, Integer i) {
 		return prefs.getInt(emoticonSize, i);
+	}
+	
+	public static boolean getValue(String k, Boolean i) {
+		return prefs.getBoolean(k,i);
 	}
 
 	public static String getDateTime() {

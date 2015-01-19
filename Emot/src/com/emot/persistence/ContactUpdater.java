@@ -208,7 +208,7 @@ public class ContactUpdater {
 					Log.i(TAG, "Service adapter value = "+ContactUpdater.serviceAdapter);
 					if(ContactUpdater.serviceAdapter!=null && ContactUpdater.serviceAdapter.isAuthenticated()){
 						Log.i(TAG, "Adding roster "+emotter.getString("mobile"));
-						ContactUpdater.serviceAdapter.addRosterItem(emotter.getString("mobile")+"@"+WebServiceConstants.CHAT_DOMAIN, contacts.get(emotter.getString("mobile")), null);
+						ContactUpdater.serviceAdapter.addRosterItem(emotter.getString("mobile")+"@"+WebServiceConstants.CHAT_DOMAIN, contacts.get(emotter.getString("mobile")), "Buddies");
 						ContactUpdater.serviceAdapter.sendPresenceRequest(emotter.getString("mobile")+"@"+WebServiceConstants.CHAT_DOMAIN, "subscribe");
 					}
 					//cr.close();

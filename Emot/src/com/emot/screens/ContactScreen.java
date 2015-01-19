@@ -41,7 +41,7 @@ import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
 import com.emot.persistence.ContactUpdater;
 
-public class ContactScreen extends ActionBarActivity{
+public class ContactScreen extends EmotActivity{
 	private ListView listviewContact;
 	private static String TAG = ContactScreen.class.getSimpleName();
 	private ArrayList<Contact> contacts;

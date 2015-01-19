@@ -26,7 +26,7 @@ public interface Smackable {
 	void sendPresenceRequest(String user, String type);
 	void addRosterGroup(String group);
 	String changePassword(String newPassword);
-	
+	void setLastActivity();
 	void setStatusFromConfig();
 	void sendMessage(String user, String message);
 	void sendChatState(String user, String state);

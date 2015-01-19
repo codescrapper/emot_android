@@ -1,5 +1,6 @@
 package com.emot.screens;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,8 +15,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.ActionBarActivity;
-import com.emot.androidclient.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emot.androidclient.IXMPPRosterCallback.Stub;
 import com.emot.androidclient.XMPPRosterServiceAdapter;
@@ -43,13 +43,16 @@ import com.emot.androidclient.service.IXMPPRosterService;
 import com.emot.androidclient.service.XMPPService;
 import com.emot.androidclient.util.ConnectionState;
 import com.emot.androidclient.util.EmotUtils;
+import com.emot.androidclient.util.Log;
 import com.emot.common.ImageHelper;
 import com.emot.common.TaskCompletedRunnable;
+import com.emot.constants.ApplicationConstants;
 import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
 import com.emot.persistence.ContactUpdater;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-public class LastChatScreen extends ActionBarActivity {
+public class LastChatScreen extends EmotActivity {
 	private static String TAG = LastChatScreen.class.getSimpleName();
 	private ListView listLastChat;
 	
@@ -60,19 +63,56 @@ public class LastChatScreen extends ActionBarActivity {
 	private Stub rosterCallback;
 	private EmotConfiguration mConfig;
 	
+	private static final String PROJECT_NUMBER = "31583646661";
+	private String regid;
+	GoogleCloudMessaging gcm;
+	public void getRegId(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                    }
+                    regid = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + regid;
+                    Log.i("GCM",  msg);
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+               Toast.makeText(getApplicationContext(), msg + "\n", Toast.LENGTH_LONG).show();
+            }
+        }.execute(null, null, null);
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.last_chat_screen);
 		Intent i = new Intent(this, XMPPService.class);
-		//i.setAction("com.emot.services.ChatService");
+		
 		this.startService(i);
 		intializeUI();
 		setAdapter();
 		registerXMPPService();
 	}
 	
+	
+	@Override
+	protected void onStop() {
+		
+		super.onStop();
+	}
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
@@ -82,12 +122,14 @@ public class LastChatScreen extends ActionBarActivity {
 	    return super.onCreateOptionsMenu(menu);
 	}
 	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
         
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_profile:
+	        	
 	            startActivity(new Intent(LastChatScreen.this, UpdateProfileScreen.class));
 	            return true;
 	        case android.R.id.home:
@@ -95,6 +137,7 @@ public class LastChatScreen extends ActionBarActivity {
 	            this.finish();
 	            return true;
 	        case R.id.action_search:
+	        	
 	            startActivity(new Intent(LastChatScreen.this, ContactScreen.class));
 	            return true;
 //	        case R.id.action_settings:
@@ -105,6 +148,7 @@ public class LastChatScreen extends ActionBarActivity {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
 	
 
 	private void intializeUI(){
@@ -159,14 +203,17 @@ public class LastChatScreen extends ActionBarActivity {
 	            String type = cur.getString(cur.getColumnIndex(ChatProvider.ChatConstants.CHAT_TYPE));
 	            //Log.i(TAG, "jid of room or freind is " + jid);
 	            if(type.equals("chat")){
+	            	
 		            Intent chatIntent = new Intent(LastChatScreen.this, ChatScreen.class);
 					chatIntent.putExtra(ChatScreen.INTENT_CHAT_FRIEND, jid);
+					
 					startActivity(chatIntent);
 	            }else if(type.equals("groupchat")){
 	            	Intent chatIntent = new Intent(LastChatScreen.this, GroupChatScreen.class);
 					chatIntent.putExtra(GroupChatScreen.INTENT_GRPCHAT_NAME, jid);
 					chatIntent.putExtra(GroupChatScreen.INTENT_GRPCHAT_SUBJECT, grpSubject);
 					//Log.i(TAG, "starting grpchat screen with grpSubject " +grpSubject);
+					
 					startActivity(chatIntent);	
 	            }
 				//cur.close();
@@ -252,7 +299,15 @@ public class LastChatScreen extends ActionBarActivity {
 	}
 	@Override
 	protected void onResume() {
+		
+		
 		super.onResume();
+		getRegId();
+		Intent intent = new Intent();
+		intent.putExtra(ApplicationConstants.GOING_AWAY, false);
+		intent.setAction(ApplicationConstants.USER_STATUS_CHANGED);
+		Log.i("", "isGoingToAnotherAppScreen is sending broadcast fle");
+		sendBroadcast(intent);
 		bindXMPPService();
 	}
 

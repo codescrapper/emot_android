@@ -28,7 +28,7 @@ import com.emot.androidclient.data.RosterProvider.RosterConstants;
 import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
 
-public class CreateGroup extends ActionBarActivity {
+public class CreateGroup extends EmotActivity {
 	
 	private ListView mContactList;
 	private ArrayList<Contact> contacts;

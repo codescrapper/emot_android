@@ -35,6 +35,7 @@ import com.emot.androidclient.exceptions.EmotXMPPException;
 import com.emot.androidclient.util.ConnectionState;
 import com.emot.androidclient.util.PreferenceConstants;
 import com.emot.androidclient.util.StatusMode;
+import com.emot.constants.ApplicationConstants;
 import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
 import com.emot.screens.ContactScreen;
@@ -80,6 +81,31 @@ public class XMPPService extends GenericService {
 				}else{
 					Toast.makeText(XMPPService.this, "Not connected to network", Toast.LENGTH_LONG).show();
 				}
+			}
+			
+		}
+	};
+	
+private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equals(ApplicationConstants.USER_STATUS_CHANGED)){
+				Log.i(TAG, ApplicationConstants.USER_STATUS_CHANGED);
+				boolean rnig = intent.getBooleanExtra(ApplicationConstants.GOING_AWAY, false);
+		    	Log.i(TAG, "Running status = "+rnig);
+		    	
+		    		if(!rnig){
+		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.available.name());
+		    			mSmackable.setStatusFromConfig();
+		    		}else{
+		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.away.name());
+		    			//mSmackable.setLastActivity();
+		    			mSmackable.setStatusFromConfig();
+		    		}
+		    		lastRunningStatus = rnig;
+		    		
+		    	
 			}
 			
 		}
@@ -238,6 +264,7 @@ public class XMPPService extends GenericService {
 		registerReceiver(mConnectivityChangedReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 		registerReceiver(mMissedCallReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
 		registerReceiver(mSubjectChangedReciever, new IntentFilter("GROUP_SUBJECT_CHANGED"));
+		registerReceiver(mWentOnStop, new IntentFilter(ApplicationConstants.USER_STATUS_CHANGED));
 		mPAlarmIntent = PendingIntent.getBroadcast(this, 0, mAlarmIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		registerReceiver(mAlarmReceiver, new IntentFilter(RECONNECT_ALARM));
@@ -275,6 +302,7 @@ public class XMPPService extends GenericService {
 		unregisterReceiver(mAlarmReceiver);
 		unregisterReceiver(mMissedCallReceiver);
 		unregisterReceiver(mSubjectChangedReciever);
+		unregisterReceiver(mWentOnStop);
 		  if (wakeLock != null) {
               if (wakeLock.isHeld()) {
                   wakeLock.release();
@@ -797,26 +825,26 @@ public class XMPPService extends GenericService {
 		});
 		
 		//Timer which keeps updating user status
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-		    @Override
-		    public void run() {
-		    	boolean rnig = mSmackable.isRunning();
-		    	Log.i(TAG, "Running status = "+rnig);
-		    	if(lastRunningStatus!=rnig){
-		    		if(rnig){
-		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.available.name());
-		    		}else{
-		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.away.name());
-		    		}
-		    		lastRunningStatus = rnig;
-		    		mSmackable.setStatusFromConfig();
-		    	}
-		    	
-		    }
-
-		}, 0, STATUS_SEND_INTERVAL);
+//		Timer timer = new Timer();
+//		timer.scheduleAtFixedRate(new TimerTask() {
+//
+//		    @Override
+//		    public void run() {
+//		    	boolean rnig = mSmackable.isRunning();
+//		    	Log.i(TAG, "Running status = "+rnig);
+//		    	if(lastRunningStatus!=rnig){
+//		    		if(rnig){
+//		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.available.name());
+//		    		}else{
+//		    			EmotApplication.setValue(PreferenceConstants.STATUS_MODE, StatusMode.away.name());
+//		    		}
+//		    		lastRunningStatus = rnig;
+//		    		mSmackable.setStatusFromConfig();
+//		    	}
+//		    	
+//		    }
+//
+//		}, 0, STATUS_SEND_INTERVAL);
 	}
 
 	private class ReconnectAlarmReceiver extends BroadcastReceiver {
