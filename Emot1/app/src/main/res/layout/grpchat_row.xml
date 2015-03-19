@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/messageContainerLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="@drawable/chat_bg" >
+        
+         <TextView
+            android:id="@+id/grpMemberName1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/chatContentLeft"
+            android:text="Member"
+            android:textColor="@color/dark_grey"
+            android:textSize="15sp" />
+
+        <com.emot.common.EmotTextView
+            android:id="@+id/chatContentLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="someting empty layout bro"
+            android:textColor="@color/white" 
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/chatDateLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chatContentLeft"
+            android:text="10-08-2014 10:19 PM"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/chatTickLeft"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_below="@id/chatContentLeft"
+            android:layout_toRightOf="@id/chatDateLeft"
+            android:src="@drawable/double_tick"
+            android:layout_marginLeft="5dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/messageContainerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@drawable/chat_bg_right" >
+        
+        
+		<TextView
+            android:id="@+id/grpMemberName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+           android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Member"
+            android:textColor="@color/dark_grey"
+            android:textSize="15sp" />
+		
+        <com.emot.common.EmotTextView
+            android:id="@+id/chatContentRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grpMemberName2"
+            android:text="Some empty again brother."
+            android:textColor="@color/dark_grey"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+        
+        
+
+        <TextView
+            android:id="@+id/chatDateRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chatContentRight"
+            android:textColor="@color/dark_grey"
+            android:text="23-10-2014 10:17 AM"
+            android:textSize="8sp" />
+     
+        <ImageView android:id="@+id/chatTickRight"
+            android:src="@drawable/single_tick"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_toRightOf="@id/chatDateRight"
+            android:layout_below="@id/chatContentRight"
+            android:layout_marginLeft="5dp"/>
+
+        
+
+    </RelativeLayout>
+
+</LinearLayout>

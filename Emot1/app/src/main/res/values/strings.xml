@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Connection state -->
+    <string name="conn_title">Emot: %s</string>
+    <string name="conn_connecting">Connecting to server…</string>
+    <string name="conn_disconnecting">Disconnecting…</string>
+    <string name="conn_online">Online</string>
+    <string name="conn_offline">Offline</string>
+    <string name="conn_empty_roster">No contacts to show!</string>
+    <string name="conn_reconnect">Next connection attempt in %d seconds.</string>
+    <string name="conn_disconnected">Connection closed</string>
+    <string name="conn_no_network">No network connection</string>
+
+    <!-- Notifications -->
+    <string name="notification_message">Message from %s</string>
+    <string name="notification_anonymous_message">Message received</string>
+
+    <!-- Notifications -->
+    <string name="notification_error">Error while sending message!</string>
+
+    <string name="status_available">Online</string>
+    <string name="status_away">Away</string>
+    <string name="status_chat">Free for chat</string>
+    <string name="status_dnd">Do not disturb</string>
+    <string name="status_xa">Not available</string>
+    <string name="status_offline">Offline</string>
+    <string name="translator_credits">translator-credits</string>
+
+    <!-- default roster group with no name -->
+    <string name="default_group">General</string>
+    <string name="all_contacts_group">All contacts</string>
+
+    <!-- SEND listener popup -->
+    <string name="chooseContact">Choose contact</string>
+    <string name="build_version">1</string>
+    <string name="build_revision">1</string>
+    <string name="app_name">Emot</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="create_group">Create Group</string>
+    <string name="leave_group">Leave Group</string>
+    <string name="group_info">Group Info</string>
+    <string name="emots">Emots</string>
+    <string name="enterMobileNumber">Please enter your mobile number</string>
+    <string name="enterVerificationCode">Number</string>
+    <string name="ask_verification_code">Please enter last 5 digits of the number you received missed call from. We will prefill this in case you are using this device.</string>
+    <string name="enterGroupName">Please enter group name</string>
+    <string name="edit">edit</string>
+    <string name="save">SAVE</string>
+    <string name="createGroupMessage">Please Enter the name of the group you intend to create</string>
+    <string name="registrationMessage">Hey There, Let us know your mobile number. We need it to create your account.</string>
+    <string name="country">Please select your country</string>
+    <string name="selectContact">Please choose from below list</string>
+    <string name="profile">Profile</string>
+    <string name="copy_text">Copy Text</string>
+    <string name="search">Search</string>
+    <string name="selectParticipant">Select Participant</string>
+    <string name="submit">SUBMIT</string>
+    <string name="invite">INVITE FRIENDS</string>
+    <string name="invite_text">Hi there! I am using emot. Lets you chat through smiley suggestions. Download the app from here: http://tinyurl.com/p2rdtkz</string>
+    <string name="createGroup">CREATE GROUP</string>
+    <string name="send">SEND</string>
+    <string name="retry">Retrying in</string>
+    <string name="next">NEXT</string>
+    <string name="title_activity_create_group">CreateGroup</string>
+	<string name="participants">Group Members</string>
+	<string name="blank_chat_hi"> Hello there !  </string>
+	<string name="seem_new">Welcome to emot. You seem new here. Start chatting with anyone on your contact list. By the way do checkout our smiley suggestions as you chat :)</string>
+    <string name="done"> DONE  </string>
+    <string name="default_status"> Whats up !</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="enter_chat_text">Enter text here</string>
+    
+</resources>

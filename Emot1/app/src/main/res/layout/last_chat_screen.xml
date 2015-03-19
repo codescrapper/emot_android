@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:id="@+id/view_last_chats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bagni"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:textStyle="italic"
+            android:text="@string/blank_chat_hi" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_green"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="200dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/seem_new"/>
+
+        <Button
+            android:id="@+id/buttonLastChatOkay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/btnStyleOrange"
+            android:layout_gravity="center|bottom"
+            android:text="OKAY" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listLastChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="0.5dp"
+        android:listSelector="@drawable/list_selector_flatcolor"
+        android:visibility="gone" >
+    </ListView>
+
+</RelativeLayout>

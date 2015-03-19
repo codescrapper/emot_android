@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/orange"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" 
+            android:textColor="@color/black"/>
+        
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp" 
+            
+            android:textSize="12sp"
+            android:textColor="@color/black"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/chat_bg"
+        android:orientation="vertical"
+        android:weightSum="10" >
+
+        <ListView
+            android:id="@+id/chatView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:transcriptMode="alwaysScroll"
+            
+            android:divider="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" 
+             android:weightSum="100">
+
+            <com.emot.common.EmotEditText
+                android:id="@+id/editTextStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="80"
+                android:background="@drawable/border" />
+
+            <ImageView
+                android:id="@+id/dove_send"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="20"
+                android:background="@drawable/border_with_left_open"
+                android:src="@drawable/blank_user_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

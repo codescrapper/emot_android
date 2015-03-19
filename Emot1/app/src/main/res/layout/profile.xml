@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/simple_border"
+        android:orientation="vertical"
+        android:padding="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_twenty" >
+
+        <ImageView
+            android:id="@+id/imageAvatar"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:src="@drawable/blank_profile" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/viewStatusUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/text_bordered"
+        android:padding="5dp" >
+
+        <EditText
+            android:id="@+id/editTextStatus"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/halka_white"
+            android:ems="10"
+            android:hint="@string/default_status"
+            android:inputType="textMultiLine"
+            android:maxLength="140"
+            android:imeOptions="actionDone" />
+
+        <Button
+            android:id="@+id/buttonProfileSave"
+            style="@style/btnStyleOrange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/editTextStatus"
+            android:text="@string/done" />
+    </RelativeLayout>
+
+</LinearLayout>

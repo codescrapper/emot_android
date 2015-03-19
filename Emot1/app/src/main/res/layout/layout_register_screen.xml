@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/viewRegisterMobileBlock"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:orientation="vertical" >
+        
+        <TextView 
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registrationMessage"  />  
+            
+        <TextView 
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/country"
+            android:visibility="gone"
+            android:textColor="@color/black"  />
+
+     
+        <AutoCompleteTextView 
+            android:id="@+id/countryselector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/country"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/enterNumber"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/enterMobileNumber"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/submitNumber"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/submit"
+            style="@style/btnStyleOrange"
+            android:layout_marginTop="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewRegisterVerificationBlock"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:padding="5dp" >
+        
+        <TextView
+           	android:id="@+id/textVerificationNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ask_verification_code"
+            android:layout_marginBottom="20dp" />
+
+        <EditText
+            android:id="@+id/verificationCode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/enterVerificationCode"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/sendVerificationCode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/send"
+            style="@style/btnStyleOrange"
+            android:layout_marginTop="20dp" />
+        
+        <Button
+            android:id="@+id/Retry"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            
+            style="@style/btnStyleOrange"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
+</LinearLayout>
