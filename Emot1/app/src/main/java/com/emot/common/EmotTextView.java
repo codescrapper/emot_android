@@ -1,9 +1,7 @@
 package com.emot.common;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -12,12 +10,9 @@ import android.util.AttributeSet;
 import com.emot.androidclient.util.Log;
 import android.widget.TextView;
 
-import com.emot.androidclient.util.EmotUtils;
 import com.emot.constants.ApplicationConstants;
 import com.emot.model.EmotApplication;
-import com.emot.persistence.DBContract;
 import com.emot.persistence.EmoticonDBHelper;
-import com.emot.screens.R;
 
 public class EmotTextView extends TextView {
 

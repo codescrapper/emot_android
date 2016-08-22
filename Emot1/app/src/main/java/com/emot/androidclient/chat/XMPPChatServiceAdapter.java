@@ -4,6 +4,7 @@ import android.os.RemoteException;
 import com.emot.androidclient.util.Log;
 
 import com.emot.androidclient.service.IXMPPChatService;
+import com.emot.callbacks.ServiceUICallback;
 
 public class XMPPChatServiceAdapter {
 
@@ -43,6 +44,14 @@ public class XMPPChatServiceAdapter {
 			//e.printStackTrace();
 		}
 	}
+
+	public void setServiceUICallback(ServiceUICallback serviceUICallback) {
+		try {
+			xmppServiceStub.setServiceCallback(serviceUICallback);
+		} catch (RemoteException e) {
+			//e.printStackTrace();
+		}
+	}
 	
 	public void registerUICallback(IXMPPChatCallback uiCallback) {
 		try {
@@ -73,4 +82,6 @@ public class XMPPChatServiceAdapter {
 			//e.printStackTrace();
 		}
 	}
+
+
 }

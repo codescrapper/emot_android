@@ -1,6 +1,7 @@
 package com.emot.androidclient.data;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 import android.content.Context;
@@ -13,7 +14,11 @@ import com.emot.androidclient.exceptions.EmotXMPPAdressMalformedException;
 import com.emot.androidclient.util.PreferenceConstants;
 import com.emot.androidclient.util.XMPPHelper;
 import com.emot.model.EmotApplication;
-import com.emot.screens.R;
+import com.emot.screen.R;
+
+import net.grandcentrix.tray.AppPreferences;
+import net.grandcentrix.tray.core.OnTrayPreferenceChangeListener;
+import net.grandcentrix.tray.core.TrayItem;
 
 public class EmotConfiguration implements OnSharedPreferenceChangeListener {
 
@@ -80,10 +85,20 @@ public class EmotConfiguration implements OnSharedPreferenceChangeListener {
 		}
 		return config_instance;
 	}
+
+	private final OnTrayPreferenceChangeListener mTrayPrefsListener
+			= new OnTrayPreferenceChangeListener() {
+		@Override
+		public void onTrayPreferenceChanged(final Collection<TrayItem> items) {
+
+			//updateSharedPrefInfo();
+		}
+	};
 	
 	@Override
 	protected void finalize() {
-		EmotApplication.getPrefs().unregisterOnSharedPreferenceChangeListener(this);
+		//EmotApplication.getPrefs().unregisterOnTrayPreferenceChangeListener();
+		//EmotApplication.getPrefs().unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -120,11 +135,15 @@ public class EmotConfiguration implements OnSharedPreferenceChangeListener {
 		return jabPriority;
 	}
 
+
+
 	public void loadPrefs() {
 		//Small hack to load preferences for service
+
 		EmotApplication.getAppContext().getSharedPreferences("emot_prefs", Context.MODE_MULTI_PROCESS);
 		
-		SharedPreferences prefs = EmotApplication.getPrefs();
+		//SharedPreferences prefs = EmotApplication.getPrefs();
+		AppPreferences prefs = EmotApplication.getPrefs();
 		Log.i(TAG, "load prefs called!!! " + prefs.getString(PreferenceConstants.STATUS_MESSAGE, ""));
 		this.jid_configured = false;
 
@@ -138,7 +157,7 @@ public class EmotConfiguration implements OnSharedPreferenceChangeListener {
 				true);
 		this.password = prefs.getString(PreferenceConstants.PASSWORD, "");
 		this.ressource = prefs
-				.getString(PreferenceConstants.RESSOURCE, "emot-net");
+				.getString(PreferenceConstants.RESSOURCE, "localhost");
 		this.port = XMPPHelper.tryToParseInt(prefs.getString(
 				PreferenceConstants.PORT, PreferenceConstants.DEFAULT_PORT),
 				PreferenceConstants.DEFAULT_PORT_INT);

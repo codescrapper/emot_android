@@ -2,11 +2,7 @@ package com.emot.androidclient.service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.jivesoftware.smack.util.StringUtils;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -25,7 +21,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.provider.Settings;
+
 import com.emot.androidclient.util.Log;
 import android.widget.Toast;
 
@@ -35,11 +31,12 @@ import com.emot.androidclient.exceptions.EmotXMPPException;
 import com.emot.androidclient.util.ConnectionState;
 import com.emot.androidclient.util.PreferenceConstants;
 import com.emot.androidclient.util.StatusMode;
+import com.emot.callbacks.ServiceUICallback;
 import com.emot.constants.ApplicationConstants;
 import com.emot.emotobjects.Contact;
 import com.emot.model.EmotApplication;
-import com.emot.screens.ContactScreen;
-import com.emot.screens.R;
+import com.emot.screen.ContactScreen;
+import com.emot.screen.R;
 
 public class XMPPService extends GenericService {
 
@@ -110,10 +107,12 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 			
 		}
 	};
-	
-	
+
+
+
 	@Override
 	public IBinder onBind(Intent intent) {
+		Log.i(TAG, "onBind");
 		userStartedWatching();
 		Long date = intent.getLongExtra("sinceDate", -1);
 		grpSubject = intent.getStringExtra("groupSubject");
@@ -128,6 +127,7 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 		}else if(chatPartner != null && isforgrpchat){
 			return mGroupServiceChatConnection;
 		}
+		Log.i(TAG, "onBind returning mService2RosterConnection");
 		return mService2RosterConnection;
 	}
 
@@ -389,8 +389,9 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 			@Override
 			public boolean createGroup(String grpName,
 					List<Contact> members){
-				if(mSmackable != null && mSmackable.isAuthenticated()){
 				Log.i(TAG, "members   ----" +members.get(0).getName());
+				if(mSmackable != null && mSmackable.isAuthenticated()){
+				Log.i(TAG, "members   ----" +members.get(1).getName());
 				mSmackable.initMUC(grpName);
 				mSmackable.joinUsers(members);
 				return true;
@@ -483,7 +484,21 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 				if (mSmackable != null)
 					mSmackable.sendChatState(user, state);
 			}
+
+			@Override
+			public void setServiceCallback(ServiceUICallback servicecallback) throws RemoteException {
+				mServiceUICallback = servicecallback;
+
+			}
+
+
 		};
+	}
+
+	private ServiceUICallback mServiceUICallback;
+
+	public ServiceUICallback getServiceCallback(){
+		return mServiceUICallback;
 	}
 
 	private void createServiceRosterStub() {
@@ -503,6 +518,7 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 			}
 
 			public int getConnectionState() throws RemoteException {
+				System.out.println("Getting Connection State");
 				if (mSmackable != null) {
 					return mSmackable.getConnectionState().ordinal();
 				} else {
@@ -579,6 +595,7 @@ private BroadcastReceiver mWentOnStop = new BroadcastReceiver() {
 			}
 
 			public void connect() throws RemoteException {
+				Log.i("XMPPRosterServiceAdapter","Connection Attempt In Connect");
 				mConnectionDemanded.set(true);
 				mReconnectTimeout = RECONNECT_AFTER;
 				doConnect();

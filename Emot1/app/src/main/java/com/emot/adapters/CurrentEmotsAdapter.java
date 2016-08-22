@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.emot.emotobjects.CurrentEmot;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 public class CurrentEmotsAdapter extends BaseAdapter {
 	

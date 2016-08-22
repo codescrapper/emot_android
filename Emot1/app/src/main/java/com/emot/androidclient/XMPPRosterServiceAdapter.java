@@ -90,9 +90,10 @@ public class XMPPRosterServiceAdapter {
 	
 	public void connect() {
 		try {
+			Log.i("XMPPRosterServiceAdapter","Connection Attempt");
 			xmppServiceStub.connect();
 		} catch (RemoteException e) {
-			//e.printStackTrace();
+			Log.i("XMPPRosterServiceAdapter","Connection Attempt Remote Exception");
 		}
 	}
 
@@ -120,8 +121,9 @@ public class XMPPRosterServiceAdapter {
 		try {
 			return ConnectionState.values()[xmppServiceStub.getConnectionState()];
 		} catch (RemoteException e) {
-			//e.printStackTrace();
+			Log.i("XMPPRosterServiceAdapter", "Connection Attempt Remote Exception");
 		}
+		Log.i("XMPPRosterServiceAdapter", "Connection Attempt Remote Exception");
 		return ConnectionState.OFFLINE;
 	}
 

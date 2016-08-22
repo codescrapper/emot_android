@@ -1,0 +1,11 @@
+{
+  "template_vars": {
+    "code": "1234"
+  },
+  "address": {
+    "sms": {
+      "mobile": "9379475511"
+    }
+  },
+  "template_name": "OTP"
+}

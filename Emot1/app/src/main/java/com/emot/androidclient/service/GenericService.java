@@ -21,11 +21,10 @@ import android.widget.Toast;
 import com.emot.androidclient.data.EmotConfiguration;
 import com.emot.androidclient.util.EmotUtils;
 import com.emot.androidclient.util.LogConstants;
-import com.emot.constants.ApplicationConstants;
 import com.emot.constants.WebServiceConstants;
-import com.emot.screens.ChatScreen;
-import com.emot.screens.GroupChatScreen;
-import com.emot.screens.R;
+import com.emot.screen.ChatScreen;
+import com.emot.screen.GroupChatScreen;
+import com.emot.screen.R;
 
 public abstract class GenericService extends Service {
 

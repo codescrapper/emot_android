@@ -22,14 +22,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.emot.constants.ApplicationConstants;
 import com.emot.model.Emot;
 import com.emot.model.EmotApplication;
 import com.emot.persistence.DBContract;
 import com.emot.persistence.EmoticonDBHelper;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 public class EmotEditText extends EditText {
 

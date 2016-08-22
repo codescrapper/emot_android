@@ -82,8 +82,8 @@ public class ContactUpdater {
 				URL cUrl;
 				try{
 					cUrl = new URL(WebServiceConstants.HTTP + "://"+ 
-							WebServiceConstants.SERVER_IP
-							+WebServiceConstants.PATH_API+WebServiceConstants.OP_GETCONTACT);
+							WebServiceConstants.CHAT_SERVER +":"+WebServiceConstants.HTTP_PORT
+							+WebServiceConstants.REGISTER_GET_API);
 					Log.i(TAG, "URL "+cUrl);
 				}catch(MalformedURLException e){
 					//e.printStackTrace();
@@ -91,9 +91,10 @@ public class ContactUpdater {
 				}
 				Log.i(TAG, "Looking for numbers : "+numbers.toString());
 				ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("appid", EmotApplication.getValue(PreferenceConstants.USER_APPID, "")));
-				params.add(new BasicNameValuePair("number_list", numbers.toString()));
-				EmotHTTPClient contactCall = new EmotHTTPClient(cUrl, params , new TaskCompletedRunnable() {
+				//params.add(new BasicNameValuePair("appid", EmotApplication.getValue(PreferenceConstants.USER_APPID, ""))); need to uncomment
+				//params.add(new BasicNameValuePair("number_list", numbers.toString()));
+				//need to uncomment below
+				EmotHTTPClient contactCall = new EmotHTTPClient(cUrl, numbers.toString() , new TaskCompletedRunnable() {
 
 					@Override
 					public void onTaskComplete(String result) {
@@ -186,8 +187,7 @@ public class ContactUpdater {
 					ContentValues cvs = new ContentValues();
 					cvs.put(RosterProvider.RosterConstants.JID, emotter.getString("mobile")+"@"+WebServiceConstants.CHAT_DOMAIN);
 					cvs.put(RosterProvider.RosterConstants.ALIAS, contacts.get(emotter.getString("mobile")));
-					
-					
+
 					if(EmotApplication.getAppContext().getContentResolver().update(RosterProvider.CONTENT_URI, cvs, RosterProvider.RosterConstants.JID+" = '"+emotter.getString("mobile")+"@"+WebServiceConstants.CHAT_DOMAIN+"'", null)==0){
 						cvs.put(RosterProvider.RosterConstants.STATUS_MODE, "");
 						cvs.put(RosterProvider.RosterConstants.GROUP, "");

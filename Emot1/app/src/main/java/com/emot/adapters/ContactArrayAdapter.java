@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.emot.common.ImageHelper;
 import com.emot.emotobjects.Contact;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 public class ContactArrayAdapter extends ArrayAdapter<Contact> implements Filterable{
 

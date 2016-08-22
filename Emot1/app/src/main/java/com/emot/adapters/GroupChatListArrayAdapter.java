@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.emot.emotobjects.ChatMessage;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 public class GroupChatListArrayAdapter extends BaseAdapter {  
 	private Activity mContext;  

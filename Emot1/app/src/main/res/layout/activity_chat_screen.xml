@@ -71,7 +71,7 @@
                 android:inputType="textVisiblePassword|textMultiLine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_weight="70"
                 android:lines="2"
                 android:background="@drawable/border"
                 android:layout_marginLeft="5dp"
@@ -84,6 +84,17 @@
                 android:layout_weight="20"
                 android:src="@drawable/ic_launcher"
                 android:background="@drawable/list_selector_flatcolor" />
+
+            <ImageView
+                android:id="@+id/mic_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/mic_icon"
+                android:background="@drawable/list_selector_flatcolor" />
+
+
 
         </LinearLayout>
     </LinearLayout>

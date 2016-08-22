@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.emot.androidclient.util.EmotUtils;
 import com.emot.model.EmotApplication;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 import android.content.ContentValues;
 import android.content.Context;

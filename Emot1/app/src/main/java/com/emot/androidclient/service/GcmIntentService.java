@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.emot.androidclient.util.Log;
-import com.emot.screens.R;
+import com.emot.screen.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmIntentService extends IntentService {

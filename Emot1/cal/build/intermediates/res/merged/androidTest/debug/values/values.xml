@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/vishal/Documents/Emochat/emot_2015/emot_android/Emot1/cal/build/intermediates/bundles/debug/res/values/values.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">callverification</string>
+    <string name="hello_world">Hello world!</string>
+</resources>

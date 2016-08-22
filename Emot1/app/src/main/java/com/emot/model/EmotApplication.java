@@ -39,22 +39,44 @@ import org.jivesoftware.smackx.search.UserSearch;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.emot.androidclient.util.Log;
+
+import net.grandcentrix.tray.AppPreferences;
 
 public class EmotApplication extends Application {
 
 	private static final String TAG = EmotApplication.class.getSimpleName();
 	private static Context context;
-	private static SharedPreferences prefs;
+	private static SharedPreferences sprefs;
+	private static AppPreferences prefs;
 	private static List<String> roomJIDs = new ArrayList<String>();
 	public static final String XMPP_IDENTITY_NAME = "emot";
 	public static final String XMPP_IDENTITY_TYPE = "phone";
+
+	public static boolean isConnectionAvailable(Context context) {
+
+		ConnectivityManager connectivityManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivityManager != null) {
+			NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+			if (netInfo != null && netInfo.isConnected()
+					&& netInfo.isConnectedOrConnecting()
+					&& netInfo.isAvailable()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void onCreate() {
 		super.onCreate();
 
 		EmotApplication.context = getApplicationContext();
-		prefs = getAppContext().getSharedPreferences("emot_prefs", Context.MODE_MULTI_PROCESS);
+		prefs = new AppPreferences(getApplicationContext());
+		//prefs = getAppContext().getSharedPreferences("emot_prefs", Context.MODE_MULTI_PROCESS);
 	}
 	
 	public static void addRooms(final String room){
@@ -73,11 +95,21 @@ public class EmotApplication extends Application {
 		return EmotApplication.context;
 	}
 	
-	public static SharedPreferences getPrefs(){
+	/*public static SharedPreferences getPrefs(){
+		return prefs;
+	}*/
+
+	public static AppPreferences getPrefs(){
+
 		return prefs;
 	}
 
-	public static boolean setValue(String k, String v) {
+	public static SharedPreferences getSharedPrefs(){
+		sprefs = getAppContext().getSharedPreferences("emot_prefs", Context.MODE_MULTI_PROCESS);
+		return sprefs;
+	}
+
+	/*public static boolean setValue(String k, String v) {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(k, v); 
 		editor.commit();
@@ -102,6 +134,34 @@ public class EmotApplication extends Application {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putLong(k, v); 
 		editor.commit();
+		return true;
+	}*/
+
+	public static boolean setValue(String k, int v) {
+		//SharedPreferences.Editor editor = prefs.edit();
+		prefs.put(k, v);
+		//editor.commit();
+		return true;
+	}
+
+	public static boolean setValue(String k, String v) {
+		//SharedPreferences.Editor editor = prefs.edit();
+		prefs.put(k, v);
+		//editor.commit();
+		return true;
+	}
+
+	public static boolean setBooleanValue(String k, boolean v) {
+		//SharedPreferences.Editor editor = prefs.edit();
+		prefs.put(k, v);
+		//editor.commit();
+		return true;
+	}
+
+	public static boolean setLongValue(String k, long v) {
+		//SharedPreferences.Editor editor = prefs.edit();
+		prefs.put(k, v);
+		//editor.commit();
 		return true;
 	}
 	

@@ -1,6 +1,6 @@
 package com.emot.androidclient.util;
 
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 public enum StatusMode {
 	offline(R.string.status_offline, R.drawable.sb_message),

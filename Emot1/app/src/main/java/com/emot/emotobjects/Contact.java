@@ -34,7 +34,7 @@ public class Contact implements Parcelable{
 		String gjid = jid;
 		gjid = jid.substring(0, jid.lastIndexOf('@'));
 		
-		return gjid+"@emot-net/Smack";
+		return gjid+"@localhost/Smack";
 	}
 	
 	

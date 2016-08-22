@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.emot.common.EmotTextView;
 import com.emot.emotobjects.ChatMessage;
-import com.emot.screens.R;
+import com.emot.screen.R;
 
 
 public class ChatListArrayAdapter extends ArrayAdapter<ChatMessage> {  

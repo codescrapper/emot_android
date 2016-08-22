@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -17,6 +18,9 @@ import java.util.zip.GZIPInputStream;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import com.emot.androidclient.util.Log;
@@ -29,6 +33,7 @@ public class EmotHTTPClient extends AsyncTask<Void, Void, String>{
 	private static final String TAG = EmotHTTPClient.class.getSimpleName();
 	private URL url;
 	private ArrayList<NameValuePair> reqContent;
+	private String mBody;
 	private TaskCompletedRunnable taskCompletedRunnable;
 
 	public EmotHTTPClient(final URL pUrl){
@@ -49,6 +54,15 @@ public class EmotHTTPClient extends AsyncTask<Void, Void, String>{
 		this.reqContent = pRequestContents;
 		this.taskCompletedRunnable = pTaskCompletedRunnable;
 	}
+
+	public EmotHTTPClient(final URL pUrl, final String pBody, final TaskCompletedRunnable ptaskCompletedRunnable){
+
+		this.url = pUrl;
+		this.mBody = pBody;
+		this.taskCompletedRunnable = ptaskCompletedRunnable;
+	}
+
+
 
 	private String getQuery(final List<NameValuePair> params)
 			throws UnsupportedEncodingException {
@@ -97,21 +111,29 @@ public class EmotHTTPClient extends AsyncTask<Void, Void, String>{
 		try {
 			//url = new URL("http://192.168.0.104:8000/api/register/");
 			urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.addRequestProperty("Content-type","application/x-www-form-urlencoded");
+			urlConnection.addRequestProperty("Content-type", "application/json");
+
 			System.setProperty("http.keepAlive", "false");
 
-			if (reqContent != null) {
+
 				urlConnection.setDoOutput(true);
 				urlConnection.setRequestMethod(ApplicationConstants.HTTP_POST);
 
 				urlConnection.setRequestProperty("Content-Length",
-						Integer.toString(getQuery(reqContent).getBytes().length));
+						Integer.toString(mBody.getBytes().length));
+				urlConnection.setRequestProperty("token", "Tc4qndMZIn1keZOt36dZiK1l6Se4SFyC0QYaEcIR");
 
-				PrintWriter out = new PrintWriter(
+				OutputStream os = urlConnection.getOutputStream();
+				os.write(mBody.getBytes());
+				os.flush();
+
+
+
+				/*PrintWriter out = new PrintWriter(
 						urlConnection.getOutputStream());
 				out.print(getQuery(reqContent));
-				out.close();
-			}
+				out.close();*/
+			Log.d(TAG, "mBody is  : " + mBody);
 			Log.d(TAG, "connection : " + urlConnection.toString());
 			int status = urlConnection.getResponseCode();
 			Log.d(TAG, "status =" + status);
@@ -146,7 +168,7 @@ public class EmotHTTPClient extends AsyncTask<Void, Void, String>{
 			//e.printStackTrace();
 		} catch(IOException e){
 			//e.printStackTrace();
-		} 
+		}
 
 		return result;
 	}
